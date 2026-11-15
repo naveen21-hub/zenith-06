@@ -91,13 +91,13 @@ LABELS = ["23 Nov 2025", "14 Aug 2026", "06 Nov 2026"]
 
 # Exact Palette (Hex -> RGBA with opacity 215/255 for fill, 255 for outline)
 COLORS = {
-    "date1": {"hex": "#0072B2", "rgb": [0, 114, 178], "alpha": 215},    # Blue
+    "date1": {"hex": "#0072B2", "rgb": [0, 114, 178], "alpha": 215},    # Deep Blue
     "date2": {"hex": "#E69F00", "rgb": [230, 159, 0], "alpha": 215},    # Orange
     "date3": {"hex": "#009E73", "rgb": [0, 158, 115], "alpha": 215},    # Green
     "both_1_2": {"hex": "#CC79A7", "rgb": [204, 121, 167], "alpha": 220}, # Reddish Purple
-    "both_1_3": {"hex": "#56B4E9", "rgb": [86, 180, 233], "alpha": 220},  # Sky Blue
+    "both_1_3": {"hex": "#00E5FF", "rgb": [0, 229, 255], "alpha": 220},  # High-Contrast Electric Cyan (Distinct from #0072B2)
     "both_2_3": {"hex": "#D55E00", "rgb": [213, 94, 0], "alpha": 220},   # Vermilion
-    "all_three": {"hex": "#2B2D42", "rgb": [43, 45, 66], "alpha": 235}    # Dark Neutral Slate
+    "all_three": {"hex": "#2B2D42", "rgb": [43, 45, 66], "alpha": 75}     # Semi-transparent Slate (Preserves satellite water texture)
 }
 
 # 1. Generate full-resolution water masks

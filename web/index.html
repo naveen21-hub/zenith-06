@@ -598,7 +598,7 @@
 
             <div class="slider-row">
                 <label for="opacitySlider">Opacity</label>
-                <input type="range" id="opacitySlider" min="0" max="1" step="0.05" value="0.85"
+                <input type="range" id="opacitySlider" min="0" max="1" step="0.05" value="0.60"
                     aria-label="Layer Opacity" oninput="updateOpacity(this.value)">
             </div>
         </div>
@@ -771,7 +771,7 @@
                     "classes": [
                         { "label": "Water on 23 Nov 2025 only", "color": "#0072B2", "area_km2": 18.03 },
                         { "label": "Water on 06 Nov 2026 only", "color": "#009E73", "area_km2": 0.72 },
-                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026", "color": "#56B4E9", "area_km2": 59.90 }
+                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026", "color": "#00E5FF", "area_km2": 59.90 }
                     ]
                 },
                 "2026-08-14+2026-11-06": {
@@ -791,9 +791,9 @@
                         { "label": "Water on 14 Aug 2026 only", "color": "#E69F00", "area_km2": 0.06 },
                         { "label": "Water on 06 Nov 2026 only", "color": "#009E73", "area_km2": 0.71 },
                         { "label": "Water on both 23 Nov 2025 & 14 Aug 2026 only", "color": "#CC79A7", "area_km2": 7.68 },
-                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026 only", "color": "#56B4E9", "area_km2": 4.92 },
+                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026 only", "color": "#00E5FF", "area_km2": 4.92 },
                         { "label": "Water on both 14 Aug 2026 & 06 Nov 2026 only", "color": "#D55E00", "area_km2": 0.01 },
-                        { "label": "Water in all three dates", "color": "#2B2D42", "area_km2": 54.98 }
+                        { "label": "Water in all three dates (Permanent Core)", "color": "#2B2D42", "area_km2": 54.98 }
                     ]
                 }
             }
@@ -803,7 +803,7 @@
         const allAvailableDates = ["2025-11-23", "2026-08-14", "2026-11-06"];
         let activeDates = new Set(["2025-11-23", "2026-08-14", "2026-11-06"]); // default all 3
         let currentMode = "fill"; // "fill" or "outline"
-        let currentOpacity = 0.85;
+        let currentOpacity = 0.60;
 
         // Parse URL params for testing/deep-linking
         const urlParams = new URLSearchParams(window.location.search);
@@ -934,9 +934,13 @@
                     comboData.classes.forEach(cls => {
                         const row = document.createElement('div');
                         row.className = 'legend-item';
+                        const isCore = cls.color === '#2B2D42';
+                        const swatchStyle = isCore
+                            ? 'background: rgba(43, 45, 66, 0.45); border: 1.5px dashed rgba(255, 255, 255, 0.7);'
+                            : `background: ${cls.color};`;
                         row.innerHTML = `
               <div class="legend-left">
-                <div class="legend-color" style="background: ${cls.color};"></div>
+                <div class="legend-color" style="${swatchStyle}"></div>
                 <span>${cls.label}</span>
               </div>
               <div class="legend-area">${cls.area_km2.toFixed(2)} km²</div>

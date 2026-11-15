@@ -120,7 +120,7 @@
         },
         {
           "label": "Water on both 23 Nov 2025 & 06 Nov 2026",
-          "color": "#56B4E9",
+          "color": "#00E5FF",
           "area_km2": 59.9
         }
       ]
@@ -179,7 +179,7 @@
         },
         {
           "label": "Water on both 23 Nov 2025 & 06 Nov 2026 only",
-          "color": "#56B4E9",
+          "color": "#00E5FF",
           "area_km2": 4.92
         },
         {
