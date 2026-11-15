@@ -1,0 +1,198 @@
+{
+  "project": "Karnataka Water Watch",
+  "target": "KRS Reservoir, Mandya, Karnataka",
+  "spatial_resolution_m": 10.0,
+  "threshold_dB": -16.0,
+  "note": "All statistics are strictly within the study box (lon 76.445\u201376.585, lat 12.380\u201312.530).",
+  "bounds": [
+    [
+      12.350016,
+      76.450005
+    ],
+    [
+      12.549971,
+      76.69994
+    ]
+  ],
+  "dates": {
+    "2025-11-23": {
+      "label": "23 Nov 2025",
+      "color": "#0072B2",
+      "area_km2": 77.94,
+      "outline_png": "outline_2025-11-23.png",
+      "fill_png": "fill_2025-11-23.png"
+    },
+    "2026-08-14": {
+      "label": "14 Aug 2026",
+      "color": "#E69F00",
+      "area_km2": 62.72,
+      "outline_png": "outline_2026-08-14.png",
+      "fill_png": "fill_2026-08-14.png"
+    },
+    "2026-11-06": {
+      "label": "06 Nov 2026",
+      "color": "#009E73",
+      "area_km2": 61.57,
+      "outline_png": "outline_2026-11-06.png",
+      "fill_png": "fill_2026-11-06.png"
+    }
+  },
+  "combinations": {
+    "2025-11-23": {
+      "dates": [
+        "2025-11-23"
+      ],
+      "fill_png": "fill_2025-11-23.png",
+      "classes": [
+        {
+          "label": "Water on 23 Nov 2025",
+          "color": "#0072B2",
+          "area_km2": 77.94
+        }
+      ]
+    },
+    "2026-08-14": {
+      "dates": [
+        "2026-08-14"
+      ],
+      "fill_png": "fill_2026-08-14.png",
+      "classes": [
+        {
+          "label": "Water on 14 Aug 2026",
+          "color": "#E69F00",
+          "area_km2": 62.72
+        }
+      ]
+    },
+    "2026-11-06": {
+      "dates": [
+        "2026-11-06"
+      ],
+      "fill_png": "fill_2026-11-06.png",
+      "classes": [
+        {
+          "label": "Water on 06 Nov 2026",
+          "color": "#009E73",
+          "area_km2": 61.57
+        }
+      ]
+    },
+    "2025-11-23+2026-08-14": {
+      "dates": [
+        "2025-11-23",
+        "2026-08-14"
+      ],
+      "fill_png": "overlap_2025-11-23_2026-08-14.png",
+      "classes": [
+        {
+          "label": "Water on 23 Nov 2025 only",
+          "color": "#0072B2",
+          "area_km2": 15.28
+        },
+        {
+          "label": "Water on 14 Aug 2026 only",
+          "color": "#E69F00",
+          "area_km2": 0.06
+        },
+        {
+          "label": "Water on both 23 Nov 2025 & 14 Aug 2026",
+          "color": "#CC79A7",
+          "area_km2": 62.66
+        }
+      ]
+    },
+    "2025-11-23+2026-11-06": {
+      "dates": [
+        "2025-11-23",
+        "2026-11-06"
+      ],
+      "fill_png": "overlap_2025-11-23_2026-11-06.png",
+      "classes": [
+        {
+          "label": "Water on 23 Nov 2025 only",
+          "color": "#0072B2",
+          "area_km2": 18.04
+        },
+        {
+          "label": "Water on 06 Nov 2026 only",
+          "color": "#009E73",
+          "area_km2": 1.67
+        },
+        {
+          "label": "Water on both 23 Nov 2025 & 06 Nov 2026",
+          "color": "#56B4E9",
+          "area_km2": 59.9
+        }
+      ]
+    },
+    "2026-08-14+2026-11-06": {
+      "dates": [
+        "2026-08-14",
+        "2026-11-06"
+      ],
+      "fill_png": "overlap_2026-08-14_2026-11-06.png",
+      "classes": [
+        {
+          "label": "Water on 14 Aug 2026 only",
+          "color": "#E69F00",
+          "area_km2": 7.73
+        },
+        {
+          "label": "Water on 06 Nov 2026 only",
+          "color": "#009E73",
+          "area_km2": 6.58
+        },
+        {
+          "label": "Water on both 14 Aug 2026 & 06 Nov 2026",
+          "color": "#D55E00",
+          "area_km2": 54.99
+        }
+      ]
+    },
+    "2025-11-23+2026-08-14+2026-11-06": {
+      "dates": [
+        "2025-11-23",
+        "2026-08-14",
+        "2026-11-06"
+      ],
+      "fill_png": "overlap_all_three.png",
+      "classes": [
+        {
+          "label": "Water on 23 Nov 2025 only",
+          "color": "#0072B2",
+          "area_km2": 10.36
+        },
+        {
+          "label": "Water on 14 Aug 2026 only",
+          "color": "#E69F00",
+          "area_km2": 0.06
+        },
+        {
+          "label": "Water on 06 Nov 2026 only",
+          "color": "#009E73",
+          "area_km2": 1.66
+        },
+        {
+          "label": "Water on both 23 Nov 2025 & 14 Aug 2026 only",
+          "color": "#CC79A7",
+          "area_km2": 7.68
+        },
+        {
+          "label": "Water on both 23 Nov 2025 & 06 Nov 2026 only",
+          "color": "#56B4E9",
+          "area_km2": 4.92
+        },
+        {
+          "label": "Water on both 14 Aug 2026 & 06 Nov 2026 only",
+          "color": "#D55E00",
+          "area_km2": 0.01
+        },
+        {
+          "label": "Water in all three dates",
+          "color": "#2B2D42",
+          "area_km2": 54.98
+        }
+      ]
+    }
+  }
+}
