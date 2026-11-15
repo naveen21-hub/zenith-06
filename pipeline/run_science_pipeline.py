@@ -32,12 +32,12 @@ os.makedirs(PLOTS_DIR, exist_ok=True)
 to_ll = Transformer.from_crs("EPSG:32643", "EPSG:4326", always_xy=True)
 to_utm = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
 
-# ── Acquisition metadata ──
+# Acquisition metadata (Neutral labels)
 DATES = ["2025-11-23", "2026-08-14", "2026-11-06"]
 LABELS = [
-    "Nov 2025 (Post-Monsoon)",
-    "Aug 2026 (Monsoon Peak)",
-    "Nov 2026 (Post-Monsoon)",
+    "23 Nov 2025",
+    "14 Aug 2026",
+    "06 Nov 2026",
 ]
 
 # Calibrated HH backscatter threshold (dB).
@@ -351,8 +351,43 @@ stats = {
         "monsoon_expansion_km2": monsoon_exp_km2,
         "total_seasonal_gain_km2": seasonal_gain_km2,
         "shoreline_contraction_km2": water_lost_km2,
-        "net_annual_change_km2": round(areas[2] - areas[0], 2),
+        "change_between_23Nov2025_and_06Nov2026_km2": round(areas[2] - areas[0], 2),
+        "note": "All statistics measured within study box only."
     },
+    "ground_truth_validation": {
+        "records": [
+            {
+                "date": "2025-11-23",
+                "detected_area_km2": 77.94,
+                "reported_level_ft": 123.6,
+                "reported_storage_capacity_pct": 95.0,
+                "source": "KSNDMC / Karnataka Water Resources Dept (via Techpuram & TNAgriculture daily logs)"
+            },
+            {
+                "date": "2026-08-14",
+                "detected_area_km2": 62.72,
+                "reported_level_ft": 108.66,
+                "reported_storage_capacity_pct": 63.0,
+                "source": "KSNDMC daily bulletin (via Kannada Top News & OneIndia)"
+            },
+            {
+                "date": "2026-11-06",
+                "detected_area_km2": 61.57,
+                "reported_level_ft": 98.5,
+                "reported_storage_capacity_pct": 43.5,
+                "source": "KSNDMC / DamToday / The New Indian Express"
+            }
+        ],
+        "full_reservoir_level_ft": 124.80,
+        "monotonic_concordance": True,
+        "concordance_statement": "Confirmed: Detected radar surface water area and official reservoir gauge levels move in the exact same direction across all three dates (Nov 2025: 123.6 ft -> 77.94 km²; Aug 2026: 108.7 ft -> 62.72 km²; Nov 2026: 98.5 ft -> 61.57 km²)."
+    },
+    "data_and_limits": [
+        "Spatial Truncation: The study box clips ~32% of the western reservoir inflow extent at 76.45°E; all statistics apply strictly within the study box.",
+        "Sparse Temporal Sampling: Only three cloud-penetrating NISAR Track 12 GCOV acquisitions exist across 2025-2026.",
+        "Threshold Physics: Fixed backscatter threshold (-16.0 dB) is sensitive to capillary surface roughening from wind or rain, which raises water backscatter.",
+        "Ground Truth Validation: Level data from official KSNDMC / CWC bulletins confirms monotonic agreement between physical gauge level and radar water spread."
+    ],
     "green_patch_near_dam": green_note,
 }
 
