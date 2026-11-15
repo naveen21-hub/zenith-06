@@ -723,6 +723,33 @@
                         <li><b>Dam Downstream Cutoff:</b> All masks are clipped to the reservoir side of the dam wall, excluding 0.95 km² of downstream irrigation canals and flooded paddy fields.</li>
                     </ul>
                 </div>
+
+                <!-- Why Radar Box -->
+                <div style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--accent-blue); padding: 8px 10px; border-radius: 0 6px 6px 0; font-size: 10px; line-height: 1.45; color: #cbd5e1; margin-top: 8px;">
+                    <b style="color: var(--accent-blue); text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Why Radar?</b>
+                    Monsoon clouds persistently block optical satellites during peak flood and refill events. Active L-band radar microwaves penetrate cloud decks, rain, and darkness, bouncing specularly off calm water to appear dark (&lt; -16 dB).
+                </div>
+
+                <!-- 4-step How it works Line -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 6px 10px; font-size: 9px; color: #94a3b8; margin-top: 8px; line-height: 1.4;">
+                    <b style="color: #f1f5f9;">How it works:</b> 1. Linear-to-dB conversion &rarr; 2. Fixed -16.0 dB threshold &rarr; 3. Median filter, hole filling &amp; dam wall polyline clipping &rarr; 4. 7-class disjoint overlap bitmasking.
+                </div>
+
+                <!-- Footer -->
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 9px; line-height: 1.5; color: #64748b;">
+                    <div style="margin-bottom: 4px; color: #94a3b8;">
+                        <b>Team Zenith/06:</b> Naveen Singh, Pragati Verma, MD Hussain, Janavi S
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                        <b>Code &amp; Data:</b> <a href="https://github.com/naveen21-hub/zenith-06" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">github.com/naveen21-hub/zenith-06</a>
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                        <b>Credits:</b> NASA-ISRO NISAR, Alaska Satellite Facility (ASF), Esri World Imagery.
+                    </div>
+                    <div style="font-style: italic; color: #64748b;">
+                        Built with AI coding assistants (Gemini, Claude); the team chose the site, reviewed results, and validated them against reported reservoir levels.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
