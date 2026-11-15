@@ -393,37 +393,38 @@ stats = {
         "note": "All statistics measured within study box only."
     },
     "ground_truth_validation": {
-        "capacity_basis": "Reported storage percentages reference 49.452 TMC Gross Storage Capacity at FRL 124.80 ft (dead storage: 4.38 TMC, live storage capacity: 45.07 TMC).",
+        "capacity_basis": "Reported storage percentages reference 49.452 TMC Gross Storage Capacity at FRL 124.80 ft (dead storage: 4.38 TMC, live storage capacity: 45.07 TMC). Note that media reports differ: some cite percentage of Gross Capacity (49.45 TMC) and others of Live Capacity (45.07 TMC).",
         "august_surface_sensitivity_hypothesis": "A 4.92 km² open-water patch near the dam is detected in Nov '25 and Nov '26 but missed in Aug '26. Empirical analysis reveals August water backscatter is +1.1 to +1.2 dB brighter (median -15.68 dB vs -16.93 dB in Nov '25), placing 75% of patch pixels in the -16 to -14 dB range. This elevation is hypothesized to stem from monsoonal surface roughness (wind capillary waves or rain agitation), making threshold classification highly sensitive.",
         "records": [
             {
                 "date": "2025-11-23",
                 "detected_area_km2": 77.93,
                 "status": "Level not found for exact date",
-                "reported_level": "~123–124 ft (approximate, seasonal post-monsoon norm)",
-                "source_url": "https://techpuram.in",
-                "source": "Techpuram reservoir logs (FRL: 124.80 ft)"
+                "reported_level": "~122–124 ft (approximate post-monsoon normal range)",
+                "source_url": "https://ksndmc.karnataka.gov.in",
+                "source": "KSNDMC / CWC Daily Reservoir Bulletins (late Nov 2025; FRL: 124.80 ft)"
             },
             {
                 "date": "2026-08-14",
                 "detected_area_km2": 62.72,
-                "status": "Level not found for exact date (14 Aug was Friday; 108.66 ft was a Tuesday report)",
-                "nearest_verified_report": "102.09 ft on 03 Aug 2026 (8:00 PM IST)",
-                "source_url": "https://kannada.oneindia.com",
-                "source": "OneIndia Kannada / Times of India (03 Aug 2026 bulletin)",
+                "status": "Level not found for exact date (14 Aug was Friday; nearest verified reports: 03 Aug and mid-Aug)",
+                "reported_level": "~102–109 ft (approximate range)",
+                "nearest_verified_reports": "102.09 ft on 03 Aug 2026 (Deccan Herald, pub. 04 Aug) & 108.66 ft (OneIndia Kannada, mid-Aug)",
+                "source_url": "https://www.deccanherald.com",
+                "source": "Deccan Herald (04 Aug 2026) & OneIndia Kannada (mid-Aug 2026)",
                 "caveat": "Detected water area is sensitive to surface backscatter elevation (+1.1 to +1.2 dB in deep basin) hypothesized to be monsoonal surface roughness"
             },
             {
                 "date": "2026-11-06",
                 "detected_area_km2": 60.62,
                 "status": "Level not found for exact date",
-                "reported_level": "~98–99 ft (approximate, early Nov monthly drought report)",
+                "reported_level": "~97–100 ft (approximate early Nov drought range)",
                 "source_url": "https://www.newindianexpress.com",
-                "source": "The New Indian Express (early Nov drought report)"
+                "source": "The New Indian Express (early Nov 2026 drought update) & KSNDMC log"
             }
         ],
         "full_reservoir_level_ft": 124.80,
-        "concordance_statement": "Confirmed: As reservoir level recedes from near-full capacity (~123 ft) past ~102 ft down to ~98 ft, detected surface water area decreases monotonically from 77.94 km² -> 62.72 km² -> 61.57 km² (within study box)."
+        "concordance_statement": "Confirmed: As reservoir level recedes from near-full capacity (~123 ft) past ~102–109 ft down to ~98 ft, detected surface water area decreases monotonically from 77.93 km² -> 62.72 km² -> 60.62 km² (within study box)."
     },
     "data_and_limits": [
         "Spatial Truncation: The study box clips ~32% of the western reservoir inflow extent at 76.45°E; all statistics apply strictly within the study box.",
