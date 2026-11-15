@@ -50,6 +50,42 @@ c1 = min(nx, int((ux1 - x_coords[0]) / dx))
 r0 = max(0, int((y_coords[0] - uy1) / dx))
 r1 = min(ny, int((y_coords[0] - uy0) / dx))
 
+# Dam barrier polyline to clip downstream pixels east of the dam wall
+dam_wall_lonlat = [
+    (76.5700, 12.380),   # South boundary of study box
+    (76.5700, 12.415),   # South approach
+    (76.5705, 12.418),   # South abutment
+    (76.5712, 12.422),   
+    (76.5718, 12.426),   # Main sluices
+    (76.5725, 12.431),   
+    (76.5726, 12.435),   # North spillway
+    (76.5722, 12.438),   # North abutment / hill contact
+    (76.5722, 12.530)    # North boundary of study box
+]
+h_box = r1 - r0
+w_box = c1 - c0
+barrier_pts = []
+for lon, lat in dam_wall_lonlat:
+    ux, uy = to_utm.transform(lon, lat)
+    c = (ux - x_coords[0]) / dx - c0
+    r = (y_coords[0] - uy) / dx - r0
+    barrier_pts.append((r, c))
+barrier_pts = sorted(barrier_pts, key=lambda p: p[0])
+
+cutoff_col = np.zeros(h_box, dtype=np.float32)
+for i in range(len(barrier_pts) - 1):
+    r_a, c_a = barrier_pts[i]
+    r_b, c_b = barrier_pts[i+1]
+    r_start = max(0, int(np.floor(min(r_a, r_b))))
+    r_end = min(h_box, int(np.ceil(max(r_a, r_b))))
+    if r_end > r_start:
+        for r in range(r_start, r_end):
+            t = (r - r_a) / (r_b - r_a) if r_b != r_a else 0
+            cutoff_col[r] = c_a + t * (c_b - c_a)
+
+col_grid = np.tile(np.arange(w_box), (h_box, 1))
+reservoir_mask = col_grid <= cutoff_col[:, None]
+
 DATES = ["2025-11-23", "2026-08-14", "2026-11-06"]
 LABELS = ["23 Nov 2025", "14 Aug 2026", "06 Nov 2026"]
 
@@ -81,6 +117,9 @@ for i, f in enumerate(npz_files):
     props = sorted(regionprops(lbl), key=lambda p: p.area, reverse=True)
     keep = [p.label for p in props if p.area >= props[0].area * 0.05 and p.area >= 500]
     final = np.isin(lbl, keep).astype(bool)
+    
+    # Clip downstream pixels east of KRS dam wall
+    final = final & reservoir_mask
     
     fm = np.zeros((ny, nx), dtype=bool)
     fm[r0:r1, c0:c1] = final

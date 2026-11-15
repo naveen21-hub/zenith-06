@@ -81,6 +81,42 @@ print(f"NOTE: Reservoir extends west to ~76.35°E but scene starts at {lon_min:.
 print(f"  Approx {clip_lon_gap/0.30*100:.0f}% of the E-W reservoir extent is clipped (western inflow tails).")
 print(f"  All areas reported are 'within the study box' ({BOX_LON[0]}–{BOX_LON[1]}°E).\n")
 
+# Dam barrier polyline to clip downstream pixels east of the dam wall
+dam_wall_lonlat = [
+    (76.5700, 12.380),   # South boundary of study box
+    (76.5700, 12.415),   # South approach
+    (76.5705, 12.418),   # South abutment
+    (76.5712, 12.422),   
+    (76.5718, 12.426),   # Main sluices
+    (76.5725, 12.431),   
+    (76.5726, 12.435),   # North spillway
+    (76.5722, 12.438),   # North abutment / hill contact
+    (76.5722, 12.530)    # North boundary of study box
+]
+h_box = r1 - r0
+w_box = c1 - c0
+barrier_pts = []
+for lon, lat in dam_wall_lonlat:
+    ux, uy = to_utm.transform(lon, lat)
+    c = (ux - x_coords[0]) / dx - c0
+    r = (y_coords[0] - uy) / dx - r0
+    barrier_pts.append((r, c))
+barrier_pts = sorted(barrier_pts, key=lambda p: p[0])
+
+cutoff_col = np.zeros(h_box, dtype=np.float32)
+for i in range(len(barrier_pts) - 1):
+    r_a, c_a = barrier_pts[i]
+    r_b, c_b = barrier_pts[i+1]
+    r_start = max(0, int(np.floor(min(r_a, r_b))))
+    r_end = min(h_box, int(np.ceil(max(r_a, r_b))))
+    if r_end > r_start:
+        for r in range(r_start, r_end):
+            t = (r - r_a) / (r_b - r_a) if r_b != r_a else 0
+            cutoff_col[r] = c_a + t * (c_b - c_a)
+
+col_grid = np.tile(np.arange(w_box), (h_box, 1))
+reservoir_mask = col_grid <= cutoff_col[:, None]
+
 # ── Per-date processing ──
 masks = []
 areas = []
@@ -126,6 +162,8 @@ for i, npz_path in enumerate(npz_files):
         keep_labels = [r.label for r in regions_sorted
                        if r.area >= 500 and r.area >= max_area * 0.05]
         final = np.isin(labeled, keep_labels).astype(np.uint8)
+        # Clip downstream pixels east of KRS dam wall
+        final = (final & reservoir_mask).astype(np.uint8)
         print(f"  [3] Morphology: kept {len(keep_labels)} components "
               f"(largest: {max_area*pixel_area_km2:.2f} km²) in {time.time()-t3:.1f}s")
     else:

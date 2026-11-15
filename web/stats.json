@@ -18,7 +18,7 @@
   "clipping_note": "KRS reservoir extends west to ~76.35\u00b0E but our NISAR frame starts at ~76.45\u00b0E. The western inflow tails (Hemavathi/Cauvery confluence) are outside the frame. Estimated coverage: ~55-65% of the full reservoir.",
   "validation": {
     "published_krs_frl_area_km2": 129.5,
-    "max_detected_km2": 77.94,
+    "max_detected_km2": 77.93,
     "detected_as_pct_of_frl": 60.2,
     "confidence": "MODERATE. Shoreline shape matches optical imagery. Areas are plausible for the visible portion of KRS. Cannot verify absolute accuracy without ground truth or coincident optical imagery for the same dates. Wind roughening may cause 2-4 dB omission error on windy days."
   },
@@ -38,7 +38,7 @@
       "date": "2025-11-23",
       "label": "23 Nov 2025",
       "threshold_dB": -16.0,
-      "area_km2": 77.94,
+      "area_km2": 77.93,
       "note": "Within study box only"
     },
     {
@@ -52,16 +52,16 @@
       "date": "2026-11-06",
       "label": "06 Nov 2026",
       "threshold_dB": -16.0,
-      "area_km2": 61.57,
+      "area_km2": 60.62,
       "note": "Within study box only"
     }
   ],
   "change_analysis": {
     "permanent_water_km2": 54.98,
     "monsoon_expansion_km2": 0.06,
-    "total_seasonal_gain_km2": 1.72,
-    "shoreline_contraction_km2": 18.04,
-    "change_between_23Nov2025_and_06Nov2026_km2": -16.37,
+    "total_seasonal_gain_km2": 0.78,
+    "shoreline_contraction_km2": 18.03,
+    "change_between_23Nov2025_and_06Nov2026_km2": -17.31,
     "note": "All statistics measured within study box only."
   },
   "ground_truth_validation": {
