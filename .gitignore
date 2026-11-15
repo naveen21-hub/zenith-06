@@ -1,9 +1,20 @@
-/data/
+# Raw and intermediate data
+data/
 *.h5
 *.npz
 processed/db/*.npz
+
+# Credentials and environment secrets
+.netrc
+_netrc
+.env
+*.env
+
+# Python bytecode and caches
 __pycache__/
 *.pyc
+*.pyo
+
+# OS artifacts
 .DS_Store
 Thumbs.db
-
