@@ -150,7 +150,6 @@ Open your browser at: `http://localhost:8000`
   - NASA-ISRO Synthetic Aperture Radar (NISAR) Mission
   - Alaska Satellite Facility (ASF) DAAC
   - Esri World Imagery (high-resolution optical basemap)
-- *Built with AI coding assistants (Gemini, Claude); the team chose the site, reviewed results, and validated them against reported reservoir levels.*
 
 ---
 
