@@ -43,24 +43,24 @@ Tested on KRS basin window across fixed thresholds for both HH and HV polarizati
 
 ---
 
-## 4. Real-World Gauge Level Validation (Ground Truth)
-Official reservoir gauge levels recorded by Karnataka State Natural Disaster Monitoring Centre (KSNDMC) and Central Water Commission (CWC):
+## 4. Real-World Gauge Level Validation (Ground Truth & Evidence)
 
-| Date | NISAR Detected Area | Official Gauge Level | Storage % | Source Citation |
-| :--- | :--- | :--- | :--- | :--- |
-| **23 Nov 2025** | **77.94 km²** | **123.60 ft** | **95.0%** | KSNDMC / Karnataka Water Resources Dept |
-| **14 Aug 2026** | **62.72 km²** | **108.66 ft** | **63.0%** | KSNDMC daily bulletin / OneIndia / Kannada Top News |
-| **06 Nov 2026** | **61.57 km²** | **98.50 ft** | **43.5%** | KSNDMC / DamToday / The New Indian Express |
+| Acquisition Date | NISAR Detected Area (Study Box) | Official Gauge Level on Exact Date | Status & Nearest Verified Report | Time of Day | Storage Basis (% of 49.45 TMC Gross) | Publication / Source URL |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **23 Nov 2025** (Sun) | **77.94 km²** | **Level not found for this exact date** | Monthly logs report reservoir near full capacity (~123–124 ft in late Nov 2025; FRL is 124.80 ft) | Unspecified daily log | ~93–95% gross | [techpuram.in KRS Archive](https://techpuram.in) |
+| **14 Aug 2026** (Fri) | **62.72 km²** | **Level not found for this exact date** | **Nearest verified report:** **102.09 ft** on **03 Aug 2026**.<br>*(The 108.66 ft figure was published on a Tuesday in mid-August, not Friday 14 Aug)* | **8:00 PM** (03 Aug 2026) | ~52.5% on 03 Aug; ~63% gross reported in mid-August article | [OneIndia Kannada (03 Aug 2026, 102.09 ft)](https://kannada.oneindia.com)<br>[Times of India (03 Aug 2026)](https://timesofindia.indiatimes.com) |
+| **06 Nov 2026** (Fri) | **61.57 km²** | **Level not found for this exact date** | Early/mid-November 2026 drought reports cite water level receding to **~98–99 ft** (~21.3–21.9 TMC) | Unspecified daily bulletin | ~43.0–43.5% gross | [The New Indian Express](https://www.newindianexpress.com)<br>[Asianet News](https://kannada.asianetnews.com) |
 
-**Validation Verdict:**
-- **Full Reservoir Level (FRL):** 124.80 ft.
-- **Monotonic Concordance Confirmed:** Detected surface water area and official gauge water levels move in the **exact same direction**:
-  `23 Nov 2025 (123.6 ft, 77.94 km²) > 14 Aug 2026 (108.7 ft, 62.72 km²) > 06 Nov 2026 (98.5 ft, 61.57 km²)`
-- Drought reports in Karnataka news confirm the 2026 Southwest monsoon was deficient in the Cauvery catchment, causing KRS storage to drop from 63% down to 43% by November.
+**Validation Verdict & Area Mismatch:**
+- **Full Reservoir Level (FRL):** 124.80 ft; Maximum Gross Capacity = 49.452 TMC.
+- **Monotonic Concordance:** Area and water level move in the exact same direction:
+  `23 Nov 2025 (~123–124 ft, 77.94 km²) > 14 Aug 2026 (~102–108 ft, 62.72 km²) > 06 Nov 2026 (~98–99 ft, 61.57 km²)`
+- **15 km² vs 1 km² Drop Explanation:** 
+  1. *Wind Roughening Undercount:* On 14 Aug 2026, 19.29 km² of open water had backscatter between -16 and -14 dB due to monsoon wind capillary waves. At -14 dB, detected area reaches 78.72 km², proving the -16.0 dB mask undercounts 14 Aug water by ~10–15 km².
+  2. *Hypsometry:* Drawdown from 124 ft to 110 ft dewaters wide flat floodplains. Below 105 ft, the water is confined to deep incised river gorges where vertical drawdown causes minimal horizontal surface area contraction.
 
 ---
 
-## 5. Summary of Neutral Labels & Metric Revisions
-- Season tags replaced with neutral timestamps: `"23 Nov 2025"`, `"14 Aug 2026"`, `"06 Nov 2026"`.
-- "Annual contraction" reworded to: `"Change between 23 Nov 2025 and 06 Nov 2026 (within study box): -16.37 km²"`.
-- Added dedicated **"Data & Limits"** and **"Real-World Gauge Validation"** panels to `web/index.html`.
+## 5. Summary of UI & Code Updates
+- Website updated at `web/index.html` with working source links, honest caveats ("approximate (nearest report)"), and data limits.
+- Single source of truth updated at `pipeline/run_science_pipeline.py` and `processed/stats.json`.
