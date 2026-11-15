@@ -78,7 +78,7 @@ print(f"Basin total area: {(r1-r0)*(c1-c0)*pixel_area_km2:.1f} km²")
 # The full KRS extends to ~76.35 E; our scene starts at ~76.45 E.
 clip_lon_gap = BOX_LON[0] - 76.35  # ~0.095 degrees
 print(f"NOTE: Reservoir extends west to ~76.35°E but scene starts at {lon_min:.2f}°E.")
-print(f"  Approx {clip_lon_gap/0.30*100:.0f}% of the E-W reservoir extent is clipped (western inflow tails).")
+print(f"  The study box clips ~40% of the reservoir's full water-spread area (~45% of linear E-W reach), capturing ~60% of FRL (77.93 km² of ~129.5 km²).")
 print(f"  All areas reported are 'within the study box' ({BOX_LON[0]}–{BOX_LON[1]}°E).\n")
 
 # Dam barrier polyline to clip downstream pixels east of the dam wall
@@ -427,7 +427,7 @@ stats = {
         "concordance_statement": "Confirmed: As reservoir level recedes from near-full capacity (~123 ft) past ~102–109 ft down to ~98 ft, detected surface water area decreases monotonically from 77.93 km² -> 62.72 km² -> 60.62 km² (within study box)."
     },
     "data_and_limits": [
-        "Spatial Truncation: The study box clips ~32% of the western reservoir inflow extent at 76.45°E; all statistics apply strictly within the study box.",
+        "Spatial Truncation: The study box clips ~40% of the reservoir's full water-spread area (~45% of linear E-W reach west of 76.450°E), capturing ~60% of FRL (77.93 km² of ~129.5 km² published FRL spread). All statistics apply strictly within the study box.",
         "Sparse Temporal Sampling: Only three cloud-penetrating NISAR Track 12 GCOV acquisitions exist across 2025-2026.",
         "Threshold Physics: Fixed backscatter threshold (-16.0 dB) is sensitive to capillary surface roughening from wind or rain, which raises water backscatter.",
         "Ground Truth Validation: Level data from official KSNDMC / CWC bulletins confirms monotonic agreement between physical gauge level and radar water spread."

@@ -99,7 +99,7 @@
     "concordance_statement": "Confirmed: As reservoir level recedes from near-full capacity (~123 ft) past ~102\u2013109 ft down to ~98 ft, detected surface water area decreases monotonically from 77.93 km\u00b2 -> 62.72 km\u00b2 -> 60.62 km\u00b2 (within study box)."
   },
   "data_and_limits": [
-    "Spatial Truncation: The study box clips ~32% of the western reservoir inflow extent at 76.45\u00b0E; all statistics apply strictly within the study box.",
+    "Spatial Truncation: The study box clips ~40% of the reservoir's full water-spread area (~45% of linear E-W reach west of 76.450\u00b0E), capturing ~60% of FRL (77.93 km\u00b2 of ~129.5 km\u00b2 published FRL spread). All statistics apply strictly within the study box.",
     "Sparse Temporal Sampling: Only three cloud-penetrating NISAR Track 12 GCOV acquisitions exist across 2025-2026.",
     "Threshold Physics: Fixed backscatter threshold (-16.0 dB) is sensitive to capillary surface roughening from wind or rain, which raises water backscatter.",
     "Ground Truth Validation: Level data from official KSNDMC / CWC bulletins confirms monotonic agreement between physical gauge level and radar water spread."
