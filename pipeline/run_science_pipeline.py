@@ -394,11 +394,11 @@ stats = {
     },
     "ground_truth_validation": {
         "capacity_basis": "Reported storage percentages reference 49.452 TMC Gross Storage Capacity at FRL 124.80 ft (dead storage: 4.38 TMC, live storage capacity: 45.07 TMC).",
-        "area_mismatch_explanation": "The 15.22 km² drop from Nov '25 (77.94 km²) to Aug '26 (62.72 km²) versus the 1.15 km² drop from Aug '26 to Nov '26 (61.57 km²) is driven by: (1) Severe monsoon wind-induced capillary wave roughening on 14 Aug pushing ~15 km² of open water above -16.0 dB (undercounting water); and (2) Hypsometry, where drawdown above 110 ft dewaters wide flat floodplains while drawdown below 105 ft is confined to steep-sided incised bedrock river gorges.",
+        "august_surface_sensitivity_hypothesis": "A 4.92 km² open-water patch near the dam is detected in Nov '25 and Nov '26 but missed in Aug '26. Empirical analysis reveals August water backscatter is +1.1 to +1.2 dB brighter (median -15.68 dB vs -16.93 dB in Nov '25), placing 75% of patch pixels in the -16 to -14 dB range. This elevation is hypothesized to stem from monsoonal surface roughness (wind capillary waves or rain agitation), making threshold classification highly sensitive.",
         "records": [
             {
                 "date": "2025-11-23",
-                "detected_area_km2": 77.94,
+                "detected_area_km2": 77.93,
                 "status": "Level not found for exact date",
                 "reported_level": "~123–124 ft (approximate, seasonal post-monsoon norm)",
                 "source_url": "https://techpuram.in",
@@ -411,11 +411,11 @@ stats = {
                 "nearest_verified_report": "102.09 ft on 03 Aug 2026 (8:00 PM IST)",
                 "source_url": "https://kannada.oneindia.com",
                 "source": "OneIndia Kannada / Times of India (03 Aug 2026 bulletin)",
-                "caveat": "Detected water area is undercounted by ~10–15 km² due to monsoon wind roughening"
+                "caveat": "Detected water area is sensitive to surface backscatter elevation (+1.1 to +1.2 dB in deep basin) hypothesized to be monsoonal surface roughness"
             },
             {
                 "date": "2026-11-06",
-                "detected_area_km2": 61.57,
+                "detected_area_km2": 60.62,
                 "status": "Level not found for exact date",
                 "reported_level": "~98–99 ft (approximate, early Nov monthly drought report)",
                 "source_url": "https://www.newindianexpress.com",
