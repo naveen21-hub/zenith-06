@@ -1,639 +1,1037 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karnataka Water Watch | NASA Space Apps 2026</title>
-  
-  <!-- Leaflet CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
-  <!-- Chart.js for Time-Series Analysis -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karnataka Water Watch | NASA Space Apps 2026</title>
 
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-  <style>
-    :root {
-      --bg-dark: #0f172a;
-      --panel-bg: rgba(15, 23, 42, 0.92);
-      --panel-border: rgba(255, 255, 255, 0.12);
-      --accent-blue: #38bdf8;
-      --accent-indigo: #6366f1;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
+    <!-- Chart.js for Time-Series Analysis -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-main);
-      overflow: hidden;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: rgba(15, 23, 42, 0.94);
+            --panel-border: rgba(255, 255, 255, 0.14);
+            --accent-blue: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            /* Canonical Date Palette */
+            --color-date1: #0072B2;
+            /* 23 Nov 2025 */
+            --color-date2: #E69F00;
+            /* 14 Aug 2026 */
+            --color-date3: #009E73;
+            /* 06 Nov 2026 */
+        }
 
-    /* Top Navigation Header */
-    header {
-      background: var(--panel-bg);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--panel-border);
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-    .logo-badge {
-      background: linear-gradient(135deg, #0284c7, #6366f1);
-      color: white;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
-    }
+        /* Accessibility focus styling */
+        button:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 2px;
+        }
 
-    .brand-text h1 {
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        /* Top Navigation Header */
+        header {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
 
-    .brand-text p {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    .header-pills {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+        .logo-badge {
+            background: #0284c7;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 5px 9px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
 
-    .pill {
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
-    }
+        .brand-text h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .pill-active {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: rgba(56, 189, 248, 0.4);
-      color: var(--accent-blue);
-      font-weight: 500;
-    }
+        .brand-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
 
-    /* Main Container */
-    #main-container {
-      flex: 1;
-      position: relative;
-      display: flex;
-    }
+        .header-pills {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-    #map {
-      width: 100%;
-      height: 100%;
-      background: #020617;
-      z-index: 1;
-    }
+        .pill {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+        }
 
-    /* Floating Layer Controller Bar */
-    .map-controls-floating {
-      position: absolute;
-      top: 16px;
-      left: 60px;
-      z-index: 500;
-      background: var(--panel-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--panel-border);
-      border-radius: 10px;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
+        .pill-active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.4);
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
 
-    .ctrl-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-right: 4px;
-    }
+        /* Main Workspace Layout */
+        #main-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            overflow: hidden;
+        }
 
-    .epoch-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--panel-border);
-      color: #cbd5e1;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #020617;
+            z-index: 1;
+        }
 
-    .epoch-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: white;
-    }
+        /* Floating Layer Controller Bar */
+        .map-controls-floating {
+            position: absolute;
+            top: 16px;
+            left: 60px;
+            z-index: 500;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            max-width: calc(100% - 470px);
+        }
 
-    .epoch-btn.active {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: white;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-    }
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    .epoch-btn.active-change {
-      background: linear-gradient(135deg, #10b981, #0284c7);
-      border-color: #34d399;
-      color: white;
-    }
+        .ctrl-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-right: 2px;
+        }
 
-    .divider {
-      width: 1px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.15);
-      margin: 0 4px;
-    }
+        /* Date Chips */
+        .chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            color: #cbd5e1;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
 
-    /* Floating Analytics Sidebar */
-    #sidebar {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      bottom: 16px;
-      width: 380px;
-      background: var(--panel-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      z-index: 500;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.2) transparent;
-    }
+        .chip:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
 
-    .sidebar-header {
-      padding: 16px 20px 12px 20px;
-      border-bottom: 1px solid var(--panel-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .chip-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: inline-block;
+        }
 
-    .sidebar-header h2 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.3px;
-    }
+        .chip[data-date="2025-11-23"] .chip-swatch {
+            background: var(--color-date1);
+        }
 
-    .sidebar-content {
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+        .chip[data-date="2026-08-14"] .chip-swatch {
+            background: var(--color-date2);
+        }
 
-    /* KPI Grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+        .chip[data-date="2026-11-06"] .chip-swatch {
+            background: var(--color-date3);
+        }
 
-    .kpi-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 10px 12px;
-      border-radius: 8px;
-    }
+        .chip.active[data-date="2025-11-23"] {
+            border-color: var(--color-date1);
+            background: rgba(0, 114, 178, 0.25);
+            color: #fff;
+            font-weight: 600;
+        }
 
-    .kpi-title {
-      font-size: 10px;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
+        .chip.active[data-date="2026-08-14"] {
+            border-color: var(--color-date2);
+            background: rgba(230, 159, 0, 0.25);
+            color: #fff;
+            font-weight: 600;
+        }
 
-    .kpi-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-    }
+        .chip.active[data-date="2026-11-06"] {
+            border-color: var(--color-date3);
+            background: rgba(0, 158, 115, 0.25);
+            color: #fff;
+            font-weight: 600;
+        }
 
-    .kpi-sub {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+        /* Mode Toggle Switch (Segmented) */
+        .segmented-switch {
+            display: flex;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 2px;
+        }
 
-    /* Epoch Table */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-    }
+        .segment-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
 
-    .data-table th {
-      text-align: left;
-      padding: 6px 8px;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--panel-border);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 9px;
-    }
+        .segment-btn:hover {
+            color: #fff;
+        }
 
-    .data-table td {
-      padding: 8px 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
+        .segment-btn.active {
+            background: #0284c7;
+            color: #fff;
+            font-weight: 600;
+        }
 
-    /* Chart Container */
-    .chart-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 12px;
-    }
+        .divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: 0 4px;
+        }
 
-    .chart-box h3 {
-      font-size: 11px;
-      font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 8px;
-    }
+        /* Opacity Slider Control */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
 
-    /* Legend Box */
-    .legend-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 12px;
-    }
+        .slider-row input[type="range"] {
+            width: 80px;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      margin-bottom: 6px;
-      color: #cbd5e1;
-    }
+        /* Floating Analytics Sidebar */
+        #sidebar {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            bottom: 16px;
+            width: 380px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
 
-    .legend-color {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
+        .sidebar-header {
+            padding: 14px 18px 12px 18px;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
 
-    /* Insight Banner */
-    .insight-card {
-      background: rgba(56, 189, 248, 0.06);
-      border-left: 3px solid var(--accent-blue);
-      padding: 10px 12px;
-      border-radius: 0 8px 8px 0;
-      font-size: 11px;
-      line-height: 1.5;
-      color: #cbd5e1;
-    }
+        .sidebar-header h2 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.3px;
+        }
 
-    .insight-card b {
-      color: var(--accent-blue);
-    }
+        .sidebar-content {
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
 
-    /* Opacity Slider Control */
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
 
-    .slider-row input[type="range"] {
-      flex: 1;
-      accent-color: var(--accent-blue);
-    }
-  </style>
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+
+        .kpi-title {
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .kpi-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .kpi-sub {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Chart Container */
+        .chart-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .chart-box h3 {
+            font-size: 10px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Ground Truth Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 5px 6px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--panel-border);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 8px;
+        }
+
+        .data-table td {
+            padding: 6px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: top;
+        }
+
+        .table-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* Dynamic Legend Box */
+        .legend-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .legend-header {
+            font-size: 10px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+
+        .legend-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-outline {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            background: transparent;
+            border-width: 2px;
+            border-style: solid;
+            flex-shrink: 0;
+        }
+
+        .legend-area {
+            font-weight: 600;
+            color: #fff;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        /* Insight Banner */
+        .insight-card {
+            background: rgba(56, 189, 248, 0.06);
+            border-left: 3px solid var(--accent-blue);
+            padding: 8px 10px;
+            border-radius: 0 8px 8px 0;
+            font-size: 10px;
+            line-height: 1.45;
+            color: #cbd5e1;
+        }
+
+        /* Responsive adjustments for 390px (Mobile) and up to 1440px (Desktop) */
+        @media (max-width: 899px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+            }
+
+            #main-container {
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+            }
+
+            #map {
+                height: 52vh;
+                min-height: 340px;
+            }
+
+            .map-controls-floating {
+                position: relative;
+                top: 0;
+                left: 0;
+                max-width: 100%;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                justify-content: flex-start;
+            }
+
+            #sidebar {
+                position: relative;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                box-shadow: none;
+            }
+
+            .header-pills {
+                display: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="brand">
-      <div class="logo-badge">NISAR SAR</div>
-      <div class="brand-text">
-        <h1>Karnataka Water Watch <span style="font-size: 12px; font-weight: normal; color: var(--accent-blue);">| KRS Reservoir</span></h1>
-        <p>NASA Space Apps 2026: Dancing with the SARs (L2 GCOV Track 12, HH-Polarization)</p>
-      </div>
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <div class="logo-badge">NISAR SAR</div>
+            <div class="brand-text">
+                <h1>Karnataka Water Watch <span
+                        style="font-size: 11px; font-weight: normal; color: var(--accent-blue);">| KRS Reservoir</span>
+                </h1>
+                <p>NASA Space Apps 2026: Dancing with the SARs (L2 GCOV Track 12, HH-Polarization)</p>
+            </div>
+        </div>
+        <div class="header-pills">
+            <span class="pill pill-active">Calibrated Threshold: -16.0 dB</span>
+            <span class="pill">Resolution: 10m Pixel</span>
+            <span class="pill">Mandya, Karnataka</span>
+        </div>
+    </header>
+
+    <!-- Main Map & Control Area -->
+    <div id="main-container">
+        <div id="map"></div>
+
+        <!-- Floating Map Layer Selector -->
+        <div class="map-controls-floating" role="toolbar" aria-label="Map Overlays and Visualization Mode">
+            <div class="ctrl-group">
+                <span class="ctrl-label">Dates:</span>
+                <button class="chip active" data-date="2025-11-23" onclick="toggleDate('2025-11-23')" role="checkbox"
+                    aria-checked="true" aria-label="Toggle 23 Nov 2025">
+                    <span class="chip-swatch"></span>
+                    <span>23 Nov 2025</span>
+                </button>
+                <button class="chip active" data-date="2026-08-14" onclick="toggleDate('2026-08-14')" role="checkbox"
+                    aria-checked="true" aria-label="Toggle 14 Aug 2026">
+                    <span class="chip-swatch"></span>
+                    <span>14 Aug 2026</span>
+                </button>
+                <button class="chip active" data-date="2026-11-06" onclick="toggleDate('2026-11-06')" role="checkbox"
+                    aria-checked="true" aria-label="Toggle 06 Nov 2026">
+                    <span class="chip-swatch"></span>
+                    <span>06 Nov 2026</span>
+                </button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ctrl-group">
+                <span class="ctrl-label">Mode:</span>
+                <div class="segmented-switch" role="radiogroup" aria-label="Overlay Display Mode">
+                    <button class="segment-btn active" id="btnModeFill" onclick="setMode('fill')" role="radio"
+                        aria-checked="true">Fill</button>
+                    <button class="segment-btn" id="btnModeOutline" onclick="setMode('outline')" role="radio"
+                        aria-checked="false">Outline</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="slider-row">
+                <label for="opacitySlider">Opacity</label>
+                <input type="range" id="opacitySlider" min="0" max="1" step="0.05" value="0.85"
+                    aria-label="Layer Opacity" oninput="updateOpacity(this.value)">
+            </div>
+        </div>
+
+        <!-- Floating Sidebar -->
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <h2>RESERVOIR TELEMETRY</h2>
+                <span class="pill" style="font-size: 9px;">WITHIN STUDY BOX</span>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- KPI Grid -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-title">Max Extent (Study Box)</div>
+                        <div class="kpi-value" id="kpi-max-area" style="color: var(--color-date1);">77.94 <span
+                                style="font-size: 11px; font-weight: normal;">km²</span></div>
+                        <div class="kpi-sub">23 Nov 2025</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Permanent Core</div>
+                        <div class="kpi-value" id="kpi-perm-area" style="color: #cbd5e1;">54.98 <span
+                                style="font-size: 11px; font-weight: normal;">km²</span></div>
+                        <div class="kpi-sub">All 3 dates coincident</div>
+                    </div>
+                    <div class="kpi-card" style="grid-column: span 2;">
+                        <div class="kpi-title">Change: 23 Nov 2025 &rarr; 06 Nov 2026</div>
+                        <div class="kpi-value" id="kpi-lost-area" style="color: var(--color-date2);">-16.37 <span
+                                style="font-size: 11px; font-weight: normal;">km²</span></div>
+                        <div class="kpi-sub">Net drawdown within study box (-18.04 km² loss, +1.67 km² gain)</div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Overlay Legend Box -->
+                <div class="legend-box" id="legendContainer">
+                    <div class="legend-header" id="legendTitle">ACTIVE OVERLAY LEGEND (WITHIN STUDY BOX)</div>
+                    <div class="legend-items" id="legendItemsList">
+                        <!-- Dynamically populated from overlap.json -->
+                    </div>
+                    <div
+                        style="margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 10px; color: #94a3b8; display: flex; align-items: center; gap: 6px;">
+                        <span style="color: #ffea00; font-size: 12px;">▲</span>
+                        <span><b>KRS Dam Structure:</b> Lat 12.425°N, Lon 76.572°E</span>
+                    </div>
+                </div>
+
+                <!-- Time Series Chart -->
+                <div class="chart-box">
+                    <h3>WATER SURFACE AREA TIME SERIES (km², WITHIN STUDY BOX)</h3>
+                    <canvas id="areaChart" height="130"></canvas>
+                </div>
+
+                <!-- Real-World Ground Truth Validation Table -->
+                <div
+                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px;">
+                    <h3 style="font-size: 10px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">REAL-WORLD GAUGE
+                        VALIDATION</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>NISAR Area (Study Box)</th>
+                                <th>Official Gauge Level</th>
+                                <th>Source &amp; Caveat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="table-dot" style="background: var(--color-date1);"></span><b>23 Nov
+                                        2025</b></td>
+                                <td><b style="color: var(--color-date1);">77.94 km²</b></td>
+                                <td>~123–124 ft <i>(approximate)</i></td>
+                                <td><a href="https://techpuram.in" target="_blank"
+                                        style="color: var(--accent-blue); text-decoration: underline;">Techpuram log</a>
+                                    (level not found for exact date; late Nov post-monsoon norm; FRL: 124.8 ft)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-dot" style="background: var(--color-date2);"></span><b>14 Aug
+                                        2026</b></td>
+                                <td><b style="color: var(--color-date2);">62.72 km²</b>*</td>
+                                <td>102.09 ft <i>(nearest: 03 Aug, 8 PM)</i></td>
+                                <td><a href="https://kannada.oneindia.com" target="_blank"
+                                        style="color: var(--accent-blue); text-decoration: underline;">OneIndia
+                                        bulletin</a> (level not found for 14 Aug; *area undercounted by wind roughening)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-dot" style="background: var(--color-date3);"></span><b>06 Nov
+                                        2026</b></td>
+                                <td><b style="color: var(--color-date3);">61.57 km²</b></td>
+                                <td>~98–99 ft <i>(approximate)</i></td>
+                                <td><a href="https://www.newindianexpress.com" target="_blank"
+                                        style="color: var(--accent-blue); text-decoration: underline;">The New Indian
+                                        Express</a> (level not found for exact date; early Nov drought report)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size: 9px; color: #94a3b8; margin-top: 6px; line-height: 1.4;">
+                        <b>Storage Capacity Basis:</b> Percentages reported by KSNDMC reference <b>49.452 TMC Gross
+                            Storage Capacity</b> at FRL 124.80 ft (dead storage: 4.38 TMC; live storage: 45.07 TMC).
+                    </p>
+                    <p style="font-size: 9px; color: var(--accent-blue); margin-top: 5px; line-height: 1.4;">
+                        <b>Area Mismatch Explanation (15 km² vs 1 km²):</b> The drop from Nov '25 (77.94 km²) to Aug '26
+                        (62.72 km²) combines physical drawdown of wide shallow floodplains with <i>monsoon wind surface
+                            roughening</i>, which elevates ~15 km² of open water above -16 dB. Below 105 ft (Aug '26
+                        &rarr; Nov '26), the reservoir contracts into steep bedrock river gorges where vertical drawdown
+                        causes minimal horizontal contraction.
+                    </p>
+                </div>
+
+                <!-- Data & Limits Section -->
+                <div class="insight-card" style="border-left-color: var(--color-date2);">
+                    <b style="color: var(--color-date2);">DATA &amp; LIMITS</b>
+                    <ul style="margin-left: 14px; margin-top: 4px; font-size: 9px; line-height: 1.45; color: #cbd5e1;">
+                        <li><b>Spatial Truncation:</b> The study box clips ~32% of the western reservoir arms at
+                            76.450°E. All stats reflect the eastern basin study box (~60% of FRL).</li>
+                        <li><b>Sparse Temporal Sampling:</b> Only 3 NISAR Track 12 GCOV acquisitions exist across
+                            2025–2026.</li>
+                        <li><b>Threshold Sensitivity:</b> Calibrated fixed threshold (-16.0 dB, HH). Wind-induced
+                            capillary waves or rain can elevate water backscatter causing omission error.</li>
+                        <li><b>Validation Ground Truth:</b> Confirmed monotonic agreement with official KSNDMC reservoir
+                            gauge levels (123.6 ft &gt; 108.7 ft &gt; 98.5 ft).</li>
+                        <li><b>Dam Embankment Artifact:</b> The ~1.19 km² gain near the dam is influenced by radar
+                            double-bounce layover on steep masonry structures.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="header-pills">
-      <span class="pill pill-active">Calibrated Threshold: -16.0 dB</span>
-      <span class="pill">Resolution: 10m Pixel</span>
-      <span class="pill">Mandya, Karnataka</span>
-    </div>
-  </header>
 
-  <!-- Main Map & Control Area -->
-  <div id="main-container">
-    <div id="map"></div>
+    <script>
+        // Embedded Overlap Data (Guarantees immediate zero-CORS execution on file:// and http://)
+        const OVERLAP_DATA = {
+            "bounds": [[12.350016, 76.450005], [12.549971, 76.69994]],
+            "dates": {
+                "2025-11-23": { "label": "23 Nov 2025", "color": "#0072B2", "area_km2": 77.94, "outline_png": "outline_2025-11-23.png", "fill_png": "fill_2025-11-23.png" },
+                "2026-08-14": { "label": "14 Aug 2026", "color": "#E69F00", "area_km2": 62.72, "outline_png": "outline_2026-08-14.png", "fill_png": "fill_2026-08-14.png" },
+                "2026-11-06": { "label": "06 Nov 2026", "color": "#009E73", "area_km2": 61.57, "outline_png": "outline_2026-11-06.png", "fill_png": "fill_2026-11-06.png" }
+            },
+            "combinations": {
+                "2025-11-23": {
+                    "dates": ["2025-11-23"],
+                    "fill_png": "fill_2025-11-23.png",
+                    "classes": [{ "label": "Water on 23 Nov 2025", "color": "#0072B2", "area_km2": 77.94 }]
+                },
+                "2026-08-14": {
+                    "dates": ["2026-08-14"],
+                    "fill_png": "fill_2026-08-14.png",
+                    "classes": [{ "label": "Water on 14 Aug 2026", "color": "#E69F00", "area_km2": 62.72 }]
+                },
+                "2026-11-06": {
+                    "dates": ["2026-11-06"],
+                    "fill_png": "fill_2026-11-06.png",
+                    "classes": [{ "label": "Water on 06 Nov 2026", "color": "#009E73", "area_km2": 61.57 }]
+                },
+                "2025-11-23+2026-08-14": {
+                    "dates": ["2025-11-23", "2026-08-14"],
+                    "fill_png": "overlap_2025-11-23_2026-08-14.png",
+                    "classes": [
+                        { "label": "Water on 23 Nov 2025 only", "color": "#0072B2", "area_km2": 15.28 },
+                        { "label": "Water on 14 Aug 2026 only", "color": "#E69F00", "area_km2": 0.06 },
+                        { "label": "Water on both 23 Nov 2025 & 14 Aug 2026", "color": "#CC79A7", "area_km2": 62.66 }
+                    ]
+                },
+                "2025-11-23+2026-11-06": {
+                    "dates": ["2025-11-23", "2026-11-06"],
+                    "fill_png": "overlap_2025-11-23_2026-11-06.png",
+                    "classes": [
+                        { "label": "Water on 23 Nov 2025 only", "color": "#0072B2", "area_km2": 18.04 },
+                        { "label": "Water on 06 Nov 2026 only", "color": "#009E73", "area_km2": 1.67 },
+                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026", "color": "#56B4E9", "area_km2": 59.90 }
+                    ]
+                },
+                "2026-08-14+2026-11-06": {
+                    "dates": ["2026-08-14", "2026-11-06"],
+                    "fill_png": "overlap_2026-08-14_2026-11-06.png",
+                    "classes": [
+                        { "label": "Water on 14 Aug 2026 only", "color": "#E69F00", "area_km2": 7.73 },
+                        { "label": "Water on 06 Nov 2026 only", "color": "#009E73", "area_km2": 6.58 },
+                        { "label": "Water on both 14 Aug 2026 & 06 Nov 2026", "color": "#D55E00", "area_km2": 54.99 }
+                    ]
+                },
+                "2025-11-23+2026-08-14+2026-11-06": {
+                    "dates": ["2025-11-23", "2026-08-14", "2026-11-06"],
+                    "fill_png": "overlap_all_three.png",
+                    "classes": [
+                        { "label": "Water on 23 Nov 2025 only", "color": "#0072B2", "area_km2": 10.36 },
+                        { "label": "Water on 14 Aug 2026 only", "color": "#E69F00", "area_km2": 0.06 },
+                        { "label": "Water on 06 Nov 2026 only", "color": "#009E73", "area_km2": 1.66 },
+                        { "label": "Water on both 23 Nov 2025 & 14 Aug 2026 only", "color": "#CC79A7", "area_km2": 7.68 },
+                        { "label": "Water on both 23 Nov 2025 & 06 Nov 2026 only", "color": "#56B4E9", "area_km2": 4.92 },
+                        { "label": "Water on both 14 Aug 2026 & 06 Nov 2026 only", "color": "#D55E00", "area_km2": 0.01 },
+                        { "label": "Water in all three dates", "color": "#2B2D42", "area_km2": 54.98 }
+                    ]
+                }
+            }
+        };
 
-    <!-- Floating Map Layer Selector -->
-    <div class="map-controls-floating">
-      <span class="ctrl-label">Epoch:</span>
-      <button class="epoch-btn active" id="btn-epoch-1" onclick="switchLayer('2025-11-23')">
-        <span>23 Nov 2025</span>
-      </button>
-      <button class="epoch-btn" id="btn-epoch-2" onclick="switchLayer('2026-08-14')">
-        <span>14 Aug 2026</span>
-      </button>
-      <button class="epoch-btn" id="btn-epoch-3" onclick="switchLayer('2026-11-06')">
-        <span>06 Nov 2026</span>
-      </button>
-      
-      <div class="divider"></div>
-      
-      <button class="epoch-btn" id="btn-epoch-change" onclick="switchLayer('change')">
-        <span>Multi-Temporal Dynamics</span>
-      </button>
+        // State Variables
+        const allAvailableDates = ["2025-11-23", "2026-08-14", "2026-11-06"];
+        let activeDates = new Set(["2025-11-23", "2026-08-14", "2026-11-06"]); // default all 3
+        let currentMode = "fill"; // "fill" or "outline"
+        let currentOpacity = 0.85;
 
-      <div class="divider"></div>
-
-      <div class="slider-row">
-        <span>Opacity</span>
-        <input type="range" id="opacitySlider" min="0" max="1" step="0.05" value="0.85" oninput="updateOpacity(this.value)">
-      </div>
-    </div>
-
-    <!-- Floating Sidebar -->
-    <div id="sidebar">
-      <div class="sidebar-header">
-        <h2>RESERVOIR TELEMETRY</h2>
-        <span class="pill" style="font-size: 10px;">WITHIN STUDY BOX</span>
-      </div>
-
-      <div class="sidebar-content">
-        <!-- KPI Grid -->
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-title">Max Extent (Study Box)</div>
-            <div class="kpi-value" id="kpi-max-area">77.94 <span style="font-size: 12px; font-weight: normal;">km²</span></div>
-            <div class="kpi-sub">23 Nov 2025</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-title">Permanent Core</div>
-            <div class="kpi-value" id="kpi-perm-area" style="color: var(--accent-blue);">54.98 <span style="font-size: 12px; font-weight: normal;">km²</span></div>
-            <div class="kpi-sub">Within study box</div>
-          </div>
-          <div class="kpi-card" style="grid-column: span 2;">
-            <div class="kpi-title">Change: 23 Nov 2025 &rarr; 06 Nov 2026</div>
-            <div class="kpi-value" id="kpi-lost-area" style="color: var(--accent-amber);">-16.37 <span style="font-size: 12px; font-weight: normal;">km²</span></div>
-            <div class="kpi-sub">Net surface drawdown within study box (-18.04 km² loss, +1.72 km² gain)</div>
-          </div>
-        </div>
-
-        <!-- Time Series Chart -->
-        <div class="chart-box">
-          <h3>WATER SURFACE AREA TIME SERIES (km², WITHIN STUDY BOX)</h3>
-          <canvas id="areaChart" height="150"></canvas>
-        </div>
-
-        <!-- Real-World Ground Truth Validation Table -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px;">
-          <h3 style="font-size: 11px; font-weight: 600; color: #cbd5e1; margin-bottom: 8px;">REAL-WORLD GAUGE VALIDATION</h3>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>NISAR Area (Study Box)</th>
-                <th>Official Gauge Level</th>
-                <th>Source &amp; Caveat</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><b>23 Nov 2025</b></td>
-                <td><b style="color: #38bdf8;">77.94 km²</b></td>
-                <td>~123–124 ft <i>(approximate, seasonal norm)</i></td>
-                <td><a href="https://techpuram.in" target="_blank" style="color: #38bdf8; text-decoration: underline;">Techpuram log</a> (level not found for exact date; late Nov post-monsoon norm; FRL: 124.8 ft)</td>
-              </tr>
-              <tr>
-                <td><b>14 Aug 2026</b></td>
-                <td><b style="color: #a78bfa;">62.72 km²</b>*</td>
-                <td>102.09 ft <i>(nearest report: 03 Aug, 8 PM)</i></td>
-                <td><a href="https://kannada.oneindia.com" target="_blank" style="color: #38bdf8; text-decoration: underline;">OneIndia bulletin</a> (level not found for 14 Aug; *area undercounted by wind roughening)</td>
-              </tr>
-              <tr>
-                <td><b>06 Nov 2026</b></td>
-                <td><b style="color: #34d399;">61.57 km²</b></td>
-                <td>~98–99 ft <i>(approximate, monthly report)</i></td>
-                <td><a href="https://www.newindianexpress.com" target="_blank" style="color: #38bdf8; text-decoration: underline;">The New Indian Express</a> (level not found for exact date; early Nov drought report)</td>
-              </tr>
-            </tbody>
-          </table>
-          <p style="font-size: 10px; color: #94a3b8; margin-top: 8px; line-height: 1.4;">
-            <b>Storage Capacity Basis:</b> Percentages reported by KSNDMC reference <b>49.452 TMC Gross Storage Capacity</b> at FRL 124.80 ft (dead storage is 4.38 TMC; live storage is 45.07 TMC).
-          </p>
-          <p style="font-size: 10px; color: #38bdf8; margin-top: 6px; line-height: 1.4;">
-            <b>Area Mismatch Explanation (15 km² vs 1 km²):</b> The drop from Nov '25 (77.94 km²) to Aug '26 (62.72 km²) combines physical drawdown of wide shallow floodplains with <i>monsoon wind surface roughening</i>, which elevates ~15 km² of open water above -16 dB. Below 105 ft (Aug '26 &rarr; Nov '26), the reservoir contracts into steep bedrock river gorges where vertical drawdown causes minimal horizontal contraction.
-          </p>
-        </div>
-
-        <!-- Change Map Legend -->
-        <div class="legend-box" id="legendContainer">
-          <h3 style="font-size: 11px; font-weight: 600; color: #cbd5e1; margin-bottom: 8px;">CHANGE MAP LEGEND (WITHIN STUDY BOX)</h3>
-          <div class="legend-item">
-            <div class="legend-color" style="background: rgba(30, 136, 229, 0.9);"></div>
-            <span><b>Permanent Core Water:</b> 54.98 km²</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: rgba(0, 230, 118, 0.9);"></div>
-            <span><b>Seasonal Inundation Gain:</b> +1.72 km²</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: rgba(255, 145, 0, 0.9);"></div>
-            <span><b>Shoreline Drawdown Loss:</b> -18.04 km²</span>
-          </div>
-          <div class="legend-item">
-            <div style="width: 14px; text-align: center; color: #ffea00; font-size: 14px;">▲</div>
-            <span><b>KRS Dam Structure:</b> Lat 12.425°N, Lon 76.572°E</span>
-          </div>
-        </div>
-
-        <!-- Data & Limits Section -->
-        <div class="insight-card" style="border-left-color: var(--accent-amber);">
-          <b style="color: var(--accent-amber);">DATA &amp; LIMITS</b>
-          <ul style="margin-left: 16px; margin-top: 6px; font-size: 10px; line-height: 1.5; color: #cbd5e1;">
-            <li><b>Spatial Truncation:</b> The study box clips ~32% of the western reservoir arms at 76.450°E. All stats reflect the eastern basin study box (~60% of FRL).</li>
-            <li><b>Sparse Temporal Sampling:</b> Only 3 NISAR Track 12 GCOV acquisitions exist across 2025–2026.</li>
-            <li><b>Threshold Sensitivity:</b> Calibrated fixed threshold (-16.0 dB, HH). Wind-induced capillary waves or rain can elevate water backscatter causing omission error.</li>
-            <li><b>Validation Ground Truth:</b> Confirmed monotonic agreement with official KSNDMC reservoir gauge levels (123.6 ft &gt; 108.7 ft &gt; 98.5 ft).</li>
-            <li><b>Dam Embankment Artifact:</b> The ~1.19 km² gain near the dam is influenced by radar double-bounce layover on steep masonry structures.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Exact geographic bounding box of NISAR frame
-    // Lat: [12.3500, 12.5500], Lon: [76.4500, 76.7000]
-    const sceneBounds = [[12.350016, 76.450005], [12.549971, 76.699940]];
-    const krsDamCoords = [12.425, 76.572];
-
-    // Initialize Leaflet Map centered on KRS Reservoir
-    const map = L.map('map', {
-      center: [12.44, 76.53],
-      zoom: 12,
-      minZoom: 10,
-      maxZoom: 17
-    });
-
-    // Dual Basemaps
-    const esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics',
-      maxZoom: 18
-    }).addTo(map);
-
-    const openTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap',
-      maxZoom: 17
-    });
-
-    // Basemap Switcher Control
-    const baseMaps = {
-      "Esri World Imagery (Satellite)": esriSatellite,
-      "OpenTopoMap (Topographic)": openTopo
-    };
-    L.control.layers(baseMaps, null, { position: 'bottomleft' }).addTo(map);
-
-    // Add KRS Dam Marker
-    const damIcon = L.divIcon({
-      html: '<div style="color: #ffea00; font-size: 20px; text-shadow: 0 0 4px #000; transform: translate(-10px, -20px);">▲</div>',
-      className: 'dam-marker-icon'
-    });
-    L.marker(krsDamCoords, { icon: damIcon }).addTo(map).bindPopup('<b>Krishnaraja Sagara (KRS) Dam</b><br>Lat: 12.425°N, Lon: 76.572°E<br>Full Reservoir Level: 124.8 ft');
-
-    // Precomputed Georeferenced Overlays
-    let currentOverlay = null;
-    let currentOpacity = 0.85;
-
-    const overlays = {
-      '2025-11-23': L.imageOverlay('overlays/water_2025-11-23.png', sceneBounds, { opacity: currentOpacity }),
-      '2026-08-14': L.imageOverlay('overlays/water_2026-08-14.png', sceneBounds, { opacity: currentOpacity }),
-      '2026-11-06': L.imageOverlay('overlays/water_2026-11-06.png', sceneBounds, { opacity: currentOpacity }),
-      'change': L.imageOverlay('overlays/change_map.png', sceneBounds, { opacity: currentOpacity })
-    };
-
-    // Default to Nov 2025
-    currentOverlay = overlays['2025-11-23'].addTo(map);
-
-    // Switch Overlay Function
-    function switchLayer(layerKey) {
-      if (currentOverlay) {
-        map.removeLayer(currentOverlay);
-      }
-      currentOverlay = overlays[layerKey];
-      currentOverlay.setOpacity(currentOpacity);
-      currentOverlay.addTo(map);
-
-      // Update button active state
-      document.querySelectorAll('.epoch-btn').forEach(btn => {
-        btn.classList.remove('active');
-        btn.classList.remove('active-change');
-      });
-
-      if (layerKey === '2025-11-23') document.getElementById('btn-epoch-1').classList.add('active');
-      else if (layerKey === '2026-08-14') document.getElementById('btn-epoch-2').classList.add('active');
-      else if (layerKey === '2026-11-06') document.getElementById('btn-epoch-3').classList.add('active');
-      else if (layerKey === 'change') document.getElementById('btn-epoch-change').classList.add('active-change');
-    }
-
-    function updateOpacity(val) {
-      currentOpacity = parseFloat(val);
-      if (currentOverlay) {
-        currentOverlay.setOpacity(currentOpacity);
-      }
-    }
-
-    // Initialize Chart.js Time-Series
-    const ctx = document.getElementById('areaChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['23 Nov 2025', '14 Aug 2026', '06 Nov 2026'],
-        datasets: [{
-          label: 'Detected Water Area (km²)',
-          data: [77.94, 62.72, 61.57],
-          borderColor: '#38bdf8',
-          backgroundColor: 'rgba(56, 189, 248, 0.15)',
-          fill: true,
-          tension: 0.3,
-          pointBackgroundColor: ['#38bdf8', '#a78bfa', '#34d399'],
-          pointRadius: 5
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: {
-            min: 50,
-            max: 90,
-            grid: { color: 'rgba(255, 255, 255, 0.08)' },
-            ticks: { color: '#94a3b8', font: { size: 10 } }
-          },
-          x: {
-            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-            ticks: { color: '#94a3b8', font: { size: 10 } }
-          }
+        // Parse URL params for testing/deep-linking
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('dates')) {
+            const paramDates = urlParams.get('dates').split(',').map(d => d.trim()).filter(d => allAvailableDates.includes(d));
+            if (paramDates.length > 0) {
+                activeDates = new Set(paramDates);
+            }
         }
-      }
-    });
-  </script>
+        if (urlParams.get('mode') === 'outline') {
+            currentMode = 'outline';
+        }
+
+        const sceneBounds = OVERLAP_DATA.bounds;
+        const krsDamCoords = [12.425, 76.572];
+
+        // Initialize Leaflet Map
+        const map = L.map('map', {
+            center: [12.44, 76.53],
+            zoom: 12,
+            minZoom: 10,
+            maxZoom: 17
+        });
+
+        // Basemaps
+        const esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics',
+            maxZoom: 18
+        }).addTo(map);
+
+        const openTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap',
+            maxZoom: 17
+        });
+
+        L.control.layers({
+            "Esri World Imagery (Satellite)": esriSatellite,
+            "OpenTopoMap (Topographic)": openTopo
+        }, null, { position: 'bottomleft' }).addTo(map);
+
+        // KRS Dam Marker
+        const damIcon = L.divIcon({
+            html: '<div style="color: #ffea00; font-size: 18px; text-shadow: 0 0 4px #000; transform: translate(-9px, -18px);">▲</div>',
+            className: 'dam-marker-icon'
+        });
+        L.marker(krsDamCoords, { icon: damIcon })
+            .addTo(map)
+            .bindPopup('<b>Krishnaraja Sagara (KRS) Dam</b><br>Lat: 12.425°N, Lon: 76.572°E<br>Full Reservoir Level: 124.80 ft<br>Gross Storage: 49.452 TMC');
+
+        // Layer Containers
+        let activeOverlayLayer = null;
+        let activeOutlineLayers = [];
+
+        function getSortedActiveDates() {
+            return allAvailableDates.filter(d => activeDates.has(d));
+        }
+
+        function getKeyForDates(datesArr) {
+            return datesArr.join('+');
+        }
+
+        // Update UI controls & overlays
+        function updateDashboard() {
+            // 1. Update Date Chip Visuals & ARIA
+            allAvailableDates.forEach(date => {
+                const chip = document.querySelector(`.chip[data-date="${date}"]`);
+                if (chip) {
+                    const isActive = activeDates.has(date);
+                    chip.classList.toggle('active', isActive);
+                    chip.setAttribute('aria-checked', isActive ? 'true' : 'false');
+                }
+            });
+
+            // 2. Update Mode Buttons & ARIA
+            const btnFill = document.getElementById('btnModeFill');
+            const btnOutline = document.getElementById('btnModeOutline');
+            if (btnFill && btnOutline) {
+                btnFill.classList.toggle('active', currentMode === 'fill');
+                btnFill.setAttribute('aria-checked', currentMode === 'fill' ? 'true' : 'false');
+                btnOutline.classList.toggle('active', currentMode === 'outline');
+                btnOutline.setAttribute('aria-checked', currentMode === 'outline' ? 'true' : 'false');
+            }
+
+            // 3. Clear existing map overlays
+            if (activeOverlayLayer) {
+                map.removeLayer(activeOverlayLayer);
+                activeOverlayLayer = null;
+            }
+            activeOutlineLayers.forEach(l => map.removeLayer(l));
+            activeOutlineLayers = [];
+
+            const sortedDates = getSortedActiveDates();
+            const comboKey = getKeyForDates(sortedDates);
+            const comboData = OVERLAP_DATA.combinations[comboKey];
+
+            // 4. Render Map Overlays
+            if (currentMode === 'fill') {
+                if (comboData && comboData.fill_png) {
+                    activeOverlayLayer = L.imageOverlay('overlays/' + comboData.fill_png, sceneBounds, {
+                        opacity: currentOpacity
+                    }).addTo(map);
+                }
+            } else {
+                // Outline mode: Stack outline PNGs for all active dates
+                sortedDates.forEach(date => {
+                    const dateMeta = OVERLAP_DATA.dates[date];
+                    if (dateMeta && dateMeta.outline_png) {
+                        const outlineLayer = L.imageOverlay('overlays/' + dateMeta.outline_png, sceneBounds, {
+                            opacity: currentOpacity
+                        }).addTo(map);
+                        activeOutlineLayers.push(outlineLayer);
+                    }
+                });
+            }
+
+            // 5. Update Dynamic Legend
+            updateLegend(sortedDates, comboData);
+        }
+
+        function updateLegend(sortedDates, comboData) {
+            const titleEl = document.getElementById('legendTitle');
+            const listEl = document.getElementById('legendItemsList');
+            listEl.innerHTML = '';
+
+            if (currentMode === 'fill') {
+                titleEl.textContent = 'ACTIVE OVERLAY LEGEND (WITHIN STUDY BOX)';
+                if (comboData && comboData.classes) {
+                    comboData.classes.forEach(cls => {
+                        const row = document.createElement('div');
+                        row.className = 'legend-item';
+                        row.innerHTML = `
+              <div class="legend-left">
+                <div class="legend-color" style="background: ${cls.color};"></div>
+                <span>${cls.label}</span>
+              </div>
+              <div class="legend-area">${cls.area_km2.toFixed(2)} km²</div>
+            `;
+                        listEl.appendChild(row);
+                    });
+                }
+            } else {
+                titleEl.textContent = 'ACTIVE SHORELINE OUTLINES (WITHIN STUDY BOX)';
+                sortedDates.forEach(date => {
+                    const dateMeta = OVERLAP_DATA.dates[date];
+                    const row = document.createElement('div');
+                    row.className = 'legend-item';
+                    row.innerHTML = `
+            <div class="legend-left">
+              <div class="legend-outline" style="border-color: ${dateMeta.color};"></div>
+              <span>Shoreline (${dateMeta.label})</span>
+            </div>
+            <div class="legend-area">${dateMeta.area_km2.toFixed(2)} km²</div>
+          `;
+                    listEl.appendChild(row);
+                });
+            }
+        }
+
+        // Toggle Date Handler (at least 1 date must remain active)
+        function toggleDate(date) {
+            if (activeDates.has(date)) {
+                if (activeDates.size > 1) {
+                    activeDates.delete(date);
+                }
+            } else {
+                activeDates.add(date);
+            }
+            updateDashboard();
+        }
+
+        // Set Display Mode
+        function setMode(mode) {
+            if (mode === currentMode) return;
+            currentMode = mode;
+            updateDashboard();
+        }
+
+        // Opacity Slider
+        function updateOpacity(val) {
+            currentOpacity = parseFloat(val);
+            if (activeOverlayLayer) {
+                activeOverlayLayer.setOpacity(currentOpacity);
+            }
+            activeOutlineLayers.forEach(l => l.setOpacity(currentOpacity));
+        }
+
+        // Initialize Chart.js Time-Series
+        const ctx = document.getElementById('areaChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['23 Nov 2025', '14 Aug 2026', '06 Nov 2026'],
+                datasets: [{
+                    label: 'Detected Water Area (km², study box)',
+                    data: [77.94, 62.72, 61.57],
+                    borderColor: '#94a3b8',
+                    borderWidth: 2,
+                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                    fill: true,
+                    tension: 0.25,
+                    pointBackgroundColor: ['#0072B2', '#E69F00', '#009E73'],
+                    pointBorderColor: ['#0072B2', '#E69F00', '#009E73'],
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        min: 50,
+                        max: 90,
+                        grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } }
+                    },
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                        ticks: { color: '#94a3b8', font: { size: 10 } }
+                    }
+                }
+            }
+        });
+
+        // Run initial dashboard setup
+        updateDashboard();
+    </script>
 </body>
+
 </html>
