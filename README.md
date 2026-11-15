@@ -5,7 +5,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: NISAR](https://img.shields.io/badge/Platform-NISAR%20L2%20GCOV-orange.svg)](https://nisar.jpl.nasa.gov/)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen.svg)](https://github.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen.svg)](https://naveen21-hub.github.io/zenith-06/)
 
 ---
 
@@ -28,23 +28,41 @@ Synthetic Aperture Radar (SAR) transmits active microwave signals (L-band, $\lam
 - **Geometry:** Relative Orbit Track 12 (descending orbit pass)
 - **Polarization:** HH (co-polarized, delivering $>8\text{ dB}$ higher land-water contrast than HV cross-pol)
 - **Spatial Resolution:** $10.0\text{ m} \times 10.0\text{ m}$ pixel spacing ($\Delta x = 10.0\text{ m}, \Delta y = -10.0\text{ m}$)
-- **Acquisitions (3 Dates):**
+- **Acquisitions Analysed (3 Dates):**
   1. **2025-11-23:** Post-monsoon full reservoir baseline
   2. **2026-08-14:** Monsoon peak inflow and reservoir refill phase
   3. **2026-11-06:** Post-monsoon regional drought contraction
+- **Available Archive Granules (Track 12, KRS Frame):**
+  Across the 12-day repeat orbit between Nov 2025 and Nov 2026, 16 GCOV granules exist in the ASF archive:
+  - Cycle 006: `2025-11-23` *(analysed)*
+  - Cycle 007: `2025-12-05`
+  - Cycle 008: `2025-12-17`
+  - Cycle 009: `2025-12-29`
+  - Cycle 010: `2026-01-10`
+  - Cycle 024: `2026-06-27`
+  - Cycle 025: `2026-07-09`
+  - Cycle 026: `2026-07-21`
+  - Cycle 028: `2026-08-14` *(analysed)*
+  - Cycle 029: `2026-08-26`
+  - Cycle 030: `2026-09-07`
+  - Cycle 031: `2026-09-19`
+  - Cycle 032: `2026-10-01`
+  - Cycle 033: `2026-10-13`
+  - Cycle 034: `2026-10-25`
+  - Cycle 035: `2026-11-06` *(analysed)*
 
 ---
 
 ## 5. Methodology (4 Steps)
 ```
 [ L2 GCOV GeoTIFFs ] ──> Step 1: Linear-to-dB Power Conversion
-                     ──> Step 2: Calibrated Backscatter Thresholding (-16.0 dB)
+                     ──> Step 2: Fixed Backscatter Thresholding (-16.0 dB)
                      ──> Step 3: Morphological Cleanup & Dam Cutoff Filtering
-                     ──> Step 4: Disjoint Bitmask Change Classification
+                     ──> Step 4: 7-Class Disjoint Bitmask Classification
 ```
 
 1. **Linear-to-dB Conversion:** Extract geocoded backscatter power grids ($\gamma^0$) and convert to decibels: $\gamma^0_{\text{dB}} = 10 \cdot \log_{10}(\gamma^0)$.
-2. **Calibrated Thresholding:** Apply an empirically calibrated uniform threshold of **$-16.0\text{ dB}$** across all dates. This cleanly separates water from surrounding agriculture ($-11.0$ to $-13.3\text{ dB}$) while accommodating monsoon wind-roughened capillary waves.
+2. **Fixed Thresholding:** Apply an empirically calibrated uniform threshold of **$-16.0\text{ dB}$** across all dates. This cleanly separates water from surrounding agriculture ($-11.0$ to $-13.3\text{ dB}$) while accommodating monsoon wind-roughened capillary waves.
 3. **Morphological Cleanup & Dam Wall Clipping:**
    - 5×5 spatial median filter for speckle reduction.
    - Binary hole filling for interior gaps $< 2000\text{ px}$ ($0.20\text{ km}^2$).
@@ -76,7 +94,7 @@ Synthetic Aperture Radar (SAR) transmits active microwave signals (L-band, $\lam
 | `110` | Water on both 14 Aug 2026 & 06 Nov 2026 | `#D55E00` | **0.01 km²** |
 | `111` | In all three dates (Permanent Core) | `#2B2D42` (translucent) | **54.98 km²** |
 
-> **Key Finding:** Comparing **23 Nov 2025** and **06 Nov 2026** isolates genuine annual environmental change under identical viewing geometry (Track 12) and identical post-monsoon seasonality. Within the study box, the reservoir contracted by **-17.31 km² (-22.2%)**, showing dewatering of **18.03 km²** of shoreline over a persistent **54.98 km² core**.
+> **Key Finding:** Comparing **23 Nov 2025** and **06 Nov 2026** isolates genuine annual environmental change under identical viewing geometry (Track 12) and identical post-monsoon seasonality. Within the study box, the reservoir contracted by **-17.31 km² (-22.2%)**, showing dewatering of **18.03 km²** of shoreline over a persistent **54.98 km² core** (which excludes the $4.92\text{ km}^2$ near-dam patch missed in August; water present in both Novembers is ~59.90 km²).
 
 ---
 
@@ -84,20 +102,19 @@ Synthetic Aperture Radar (SAR) transmits active microwave signals (L-band, $\lam
 
 | Acquisition Date | NISAR Detected Area | Nearest Gauge Report | Storage Basis | Source & Documentation |
 | :--- | :---: | :---: | :---: | :--- |
-| **23 Nov 2025** | **77.93 km²** | **~123–124 ft** | ~93–95% gross | [KSNDMC Daily Bulletins](https://ksndmc.org) & [CWC Daily Reports](https://cwc.gov.in) |
-| **14 Aug 2026** | **62.72 km²** | **102.09 ft** *(03 Aug)*<br>*(mid-Aug report: 108.66 ft)* | ~52.5% gross on 03 Aug;<br>~63% gross mid-Aug | [Deccan Herald (04 Aug 2026)](https://www.deccanherald.com)<br>[OneIndia Kannada (mid-Aug 2026)](https://kannada.oneindia.com) |
-| **06 Nov 2026** | **60.62 km²** | **~98–99 ft** | ~43.0–43.5% gross | [The New Indian Express](https://www.newindianexpress.com)<br>[KSNDMC Drought Reports](https://ksndmc.org) |
+| **23 Nov 2025** | **77.93 km²** | *Level not found for this date* | — | Exact-date official reading or dated article not found (FRL: 124.80 ft). |
+| **14 Aug 2026** | **62.72 km²** | **~100–109 ft** *(approximate range)* | ~52.5% gross on 3 Aug;<br>~63% gross mid-Aug | [Deccan Herald (03 Aug 2026)](https://www.deccanherald.com/india/karnataka/karnataka-krs-water-level-crosses-100-ft-mark-revives-hope-among-farmers-4098065) (102.09 ft on Monday 3 Aug 2026; published 3 Aug 2026 23:12 IST), [Star of Mysore (03 Aug 2026)](https://starofmysore.com/krs-dam-crosses-100-ft-mark-3/) (100.34 ft on 3 Aug morning), and [OneIndia (mid-Aug 2026)](https://www.oneindia.com/chennai/mettur-dam-water-level-inflow-rises-to-7-151-cusecs-as-karnataka-releases-cauvery-water-8172905.html) (108.66 ft, exact day unconfirmed). Level not found for 14 Aug. |
+| **06 Nov 2026** | **60.62 km²** | *Level not found for this date* | — | Exact-date official reading or dated article not found. |
 
 - **Storage Capacity Basis:** Full Reservoir Level is $124.80\text{ ft}$. Gross Storage Capacity is **49.452 TMC** (total impounded volume); Live Storage Capacity is **45.070 TMC** (excluding dead storage below sill level). Media reports frequently interchange these figures.
-- **Concordance:** Water spread and gauge heights move monotonically across all three acquisitions.
+- **Directional Concordance:** Consistent in direction with approximate reported levels (news reports, exact-date official readings not found).
 
 ---
 
-## 8. Honest Limitations & Caveats
+## 8. Honest Limitations & Context (Hypotheses Only)
 1. **Frame Boundary Truncation:** The NISAR Track 12 frame cuts off at $76.450^\circ\text{E}$. The study box captures $60.2\%$ ($77.93\text{ km}^2$) of the published $129.5\text{ km}^2$ FRL spread, truncating **~40% of the reservoir's full FRL water surface area** (~45% of its linear east-west extent up to the Hemavathi/Cauvery confluence).
-2. **Temporal Sparsity:** Only three NISAR acquisitions were available during the early operational phase.
-3. **Threshold-Based Binary Masking:** In August 2026, wind capillary waves elevated median backscatter by $+1.24\text{ dB}$ ($-15.68\text{ dB}$ vs $-16.93\text{ dB}$ in Nov 2025) across a $4.92\text{ km}^2$ near-dam patch, causing partial undercounting at $-16.0\text{ dB}$.
-4. **Lack of In-Situ Ground Truth:** Gauge figures are drawn from regional daily news bulletins and disaster centre logs; exact-minute gauge logs and simultaneous cloud-free optical validation imagery were unavailable.
+2. **Threshold-Based Binary Masking:** In August 2026, wind capillary waves elevated median backscatter by $+1.24\text{ dB}$ ($-15.68\text{ dB}$ vs $-16.93\text{ dB}$ in Nov 2025) across a $4.92\text{ km}^2$ near-dam patch, causing partial undercounting at $-16.0\text{ dB}$.
+3. **Regional Hydrologic Drivers (Hypothesis Only):** Local press reported a delayed, deficit start to the 2026 monsoon season, with KRS reservoir level recording 81.34 ft on 15 Jun 2026 vs. 109.12 ft recorded on the same day in 2025 ([Star of Mysore, 15 Jun 2026](https://starofmysore.com/poor-monsoon-cuts-dam-inflows-in-cauvery-basin/)). Subsequently, regulatory releases to Tamil Nadu outpaced incoming reservoir inflows in early September 2026, discharging 9,253 cusecs against 3,028 cusecs inflow ([Star of Mysore, 3 Sep 2026](https://starofmysore.com/krs-level-falls-as-outflow-to-tn-exceeds-inflow/)). These factors are noted strictly as plausible physical drivers of regional depletion, not proven single causes.
 
 ---
 
@@ -110,8 +127,8 @@ Synthetic Aperture Radar (SAR) transmits active microwave signals (L-band, $\lam
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/karnataka-water-watch.git
-cd karnataka-water-watch
+git clone https://github.com/naveen21-hub/zenith-06.git
+cd zenith-06
 
 # Install pipeline dependencies
 pip install -r requirements.txt
@@ -126,13 +143,16 @@ Open your browser at: `http://localhost:8000`
 
 ---
 
-## 10. Credits & Acknowledgements
-- **NASA-ISRO Synthetic Aperture Radar (NISAR) Mission:** Public L2 GCOV products courtesy of NASA and ISRO.
-- **Alaska Satellite Facility (ASF) DAAC:** Radar data archive and search APIs (`asf_search`).
-- **Esri World Imagery:** High-resolution optical satellite basemap tiles.
-- **Karnataka State Natural Disaster Monitoring Centre (KSNDMC) & Central Water Commission (CWC):** Daily reservoir water level telemetry.
+## 10. Credits & Team
+- **Team Zenith/06:** Naveen Singh, Pragati Verma, MD Hussain, Janavi S
+- **Repository:** [github.com/naveen21-hub/zenith-06](https://github.com/naveen21-hub/zenith-06)
+- **Data & Missions:**
+  - NASA-ISRO Synthetic Aperture Radar (NISAR) Mission
+  - Alaska Satellite Facility (ASF) DAAC
+  - Esri World Imagery (high-resolution optical basemap)
+- *Built with AI coding assistants (Gemini, Claude); the team chose the site, reviewed results, and validated them against reported reservoir levels.*
 
 ---
 
 ## 11. Live Deployment
-- **Interactive Application:** `https://<your-username>.github.io/<repo-name>/` (hosted directly from the `/docs` branch deployment).
+- **Interactive Application:** [https://naveen21-hub.github.io/zenith-06/](https://naveen21-hub.github.io/zenith-06/) (hosted directly via GitHub Pages from `/docs`).
