@@ -633,6 +633,12 @@
                     </div>
                 </div>
 
+                <!-- Key Finding Callout (Same Season & Geometry) -->
+                <div style="background: rgba(0, 114, 178, 0.12); border-left: 3px solid var(--color-date1); padding: 8px 10px; border-radius: 0 6px 6px 0; font-size: 10px; line-height: 1.45; color: #f1f5f9;">
+                    <b style="color: var(--color-date1); text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Key Finding (Same Season &amp; Geometry, Within Study Box)</b>
+                    Between <b>23 Nov 2025</b> and <b>06 Nov 2026</b>, detected water spread contracted by <b>17.31 km² (-22.2%)</b> from <b>77.93 km²</b> to <b>60.62 km²</b>, driven by <b>18.03 km²</b> of shoreline drawdown over a persistent <b>54.98 km²</b> core.
+                </div>
+
                 <!-- Dynamic Overlay Legend Box -->
                 <div class="legend-box" id="legendContainer">
                     <div class="legend-header" id="legendTitle">ACTIVE OVERLAY LEGEND (WITHIN STUDY BOX)</div>
@@ -706,9 +712,6 @@
                         <b>Storage Capacity Basis &amp; Divergence:</b> Official KSNDMC &amp; CWC figures reference <b>49.452 TMC Gross
                             Storage Capacity</b> at FRL 124.80 ft (dead storage: 4.38 TMC; live capacity: 45.07 TMC). Note that media outlets compute capacity percentages differently: some use Gross Capacity (49.45 TMC) while others use Live Capacity (45.07 TMC), causing reported percentages to vary by 5–10% across sources for the same volume.
                     </p>
-                    <p style="font-size: 9px; color: var(--accent-blue); margin-top: 5px; line-height: 1.4;">
-                        <b>August Surface Sensitivity (Hypothesis):</b> A 4.92 km² open-water patch near the dam is detected in Nov '25 and Nov '26 but missed in Aug '26. Empirical analysis reveals August water backscatter is +1.1 to +1.2 dB brighter (median -15.68 dB vs -16.93 dB in Nov '25), placing 75% of patch pixels in the -16 to -14 dB range. This elevation is hypothesized to stem from monsoonal surface roughness (wind capillary waves or rain agitation), making threshold classification highly sensitive.
-                    </p>
                 </div>
 
                 <!-- Data & Limits Section -->
@@ -716,14 +719,11 @@
                     <b style="color: var(--color-date2);">DATA &amp; LIMITS</b>
                     <ul style="margin-left: 14px; margin-top: 4px; font-size: 9px; line-height: 1.45; color: #cbd5e1;">
                         <li><b>Spatial Truncation:</b> The study box clips ~40% of the full reservoir water-spread area (~45% of linear E-W reach west of 76.450°E), capturing ~60% of FRL (77.93 km² of ~129.5 km² published FRL spread). All stats apply strictly within the study box.</li>
-                        <li><b>Sparse Temporal Sampling:</b> Only 3 NISAR Track 12 GCOV acquisitions exist across
-                            2025–2026.</li>
-                        <li><b>Threshold Sensitivity:</b> Calibrated fixed threshold (-16.0 dB, HH). Wind-induced
-                            capillary waves or rain can elevate water backscatter causing omission error.</li>
-                        <li><b>Validation Ground Truth:</b> Confirmed monotonic agreement with official KSNDMC reservoir
-                            gauge levels (123.6 ft &gt; 108.7 ft &gt; 98.5 ft).</li>
-                        <li><b>Dam Embankment Artifact:</b> The ~1.19 km² gain near the dam is influenced by radar
-                            double-bounce layover on steep masonry structures.</li>
+                        <li><b>August Surface Backscatter Sensitivity (Hypothesis):</b> A 4.92 km² open-water patch near the dam is detected in Nov '25 and Nov '26 but missed in Aug '26 due to +1.1 to +1.2 dB brighter backscatter (median -15.68 dB vs -16.93 dB), placing 75% of patch pixels in the -16 to -14 dB range. This is hypothesized to result from monsoonal surface roughness (wind capillary waves or rain agitation), creating threshold omission without coincident meteorological verification.</li>
+                        <li><b>Sparse Temporal Sampling:</b> Only 3 NISAR Track 12 GCOV acquisitions exist across 2025–2026.</li>
+                        <li><b>Threshold Sensitivity:</b> Calibrated fixed threshold (-16.0 dB, HH). Monsoonal waves or rain can elevate water backscatter causing omission error.</li>
+                        <li><b>Validation Ground Truth:</b> Verified monotonic agreement with official KSNDMC reservoir gauge levels (~122–124 ft &gt; ~102–109 ft &gt; ~97–100 ft).</li>
+                        <li><b>Dam Downstream Cutoff:</b> All masks are clipped to the reservoir side of the dam wall, excluding 0.95 km² of downstream irrigation canals and flooded paddy fields.</li>
                     </ul>
                 </div>
             </div>

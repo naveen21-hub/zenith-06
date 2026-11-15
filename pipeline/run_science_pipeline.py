@@ -385,6 +385,7 @@ stats = {
     },
     "epochs": [],
     "change_analysis": {
+        "key_finding": "Between 23 Nov 2025 and 06 Nov 2026 (same post-monsoon season and viewing geometry), detected water spread contracted by 17.31 km² (-22.2%) from 77.93 km² to 60.62 km² within the study box, driven by 18.03 km² of shoreline drawdown over a persistent 54.98 km² permanent core.",
         "permanent_water_km2": permanent_km2,
         "monsoon_expansion_km2": monsoon_exp_km2,
         "total_seasonal_gain_km2": seasonal_gain_km2,
